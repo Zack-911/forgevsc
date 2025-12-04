@@ -2,7 +2,12 @@
     "name": "forgevsc",
     "displayName": "ForgeScript",
     "description": "Visual Studio Code Extension For ForgeScript",
-    "icon": "",
+    "publisher": "Zack-911",
+    "icon": "forgescript.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zack-911/forgevsc.git"
+    },
     "version": "1.0.0",
     "engines": {
         "vscode": "^1.75.0"
