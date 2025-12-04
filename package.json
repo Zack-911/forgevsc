@@ -1,8 +1,9 @@
 {
     "name": "forgevsc",
-    "displayName": "ForgeLSP",
-    "description": "Language Server Protocol for Forge",
-    "version": "0.0.1",
+    "displayName": "ForgeScript",
+    "description": "Visual Studio Code Extension For ForgeScript",
+    "icon": "",
+    "version": "1.0.0",
     "engines": {
         "vscode": "^1.75.0"
     },
