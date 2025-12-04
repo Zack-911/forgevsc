@@ -133,7 +133,7 @@ forgevsc/
 
 ## 🔗 Related Projects
 
-- **[ForgeLSP](../forgelsp)** - The Rust-based Language Server Protocol implementation
+- **[ForgeLSP](https://github.com/zack-911/forgelsp)** - The Rust-based Language Server Protocol implementation
 - **[ForgeScript](https://github.com/tryforge/forgescript)** - The ForgeScript language
 
 ---
