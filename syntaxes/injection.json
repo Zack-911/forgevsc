@@ -1,0 +1,32 @@
+{
+    "scopeName": "forge.injection",
+    "injectionSelector": "L:source.js, L:source.ts, L:source.js.jsx, L:source.tsx",
+    "patterns": [
+        {
+            "begin": "(code)\\s*(:)\\s*(`)",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.other.forge-code.js"
+                },
+                "2": {
+                    "name": "punctuation.separator.key-value.js"
+                },
+                "3": {
+                    "name": "string.template.begin.js"
+                }
+            },
+            "end": "`",
+            "endCaptures": {
+                "0": {
+                    "name": "string.template.end.js"
+                }
+            },
+            "contentName": "source.forge",
+            "patterns": [
+                {
+                    "include": "source.forge"
+                }
+            ]
+        }
+    ]
+}

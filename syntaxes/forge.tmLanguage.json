@@ -1,0 +1,21 @@
+{
+    "scopeName": "source.forge",
+    "patterns": [
+        {
+            "match": "\\$[a-zA-Z0-9_]+",
+            "name": "entity.name.function.forge"
+        },
+        {
+            "match": "\\[",
+            "name": "punctuation.section.bracket.begin.forge"
+        },
+        {
+            "match": "\\]",
+            "name": "punctuation.section.bracket.end.forge"
+        },
+        {
+            "match": ";",
+            "name": "punctuation.terminator.statement.forge"
+        }
+    ]
+}
