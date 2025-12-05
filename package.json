@@ -41,6 +41,11 @@
                 "command": "forgevsc.useCustomBinary",
                 "title": "Use Custom LSP Binary",
                 "category": "ForgeScript"
+            },
+            {
+                "command": "forgevsc.resetLspPath",
+                "title": "Reset LSP Binary to Default",
+                "category": "ForgeScript"
             }
         ],
         "languages": [

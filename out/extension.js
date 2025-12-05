@@ -87,6 +87,16 @@ async function activate(context) {
             await startClient(context);
         }
     }));
+    // Register command to reset the LSP binary to the default GitHub-hosted one
+    context.subscriptions.push(vscode.commands.registerCommand('forgevsc.resetLspPath', async () => {
+        await context.globalState.update('customBinaryPath', undefined);
+        vscode.window.showInformationMessage('ForgeLSP: Reset to default binary path.');
+        // Restart client if already running
+        if (client && client.isRunning()) {
+            await client.stop();
+            await startClient(context);
+        }
+    }));
     // Register command to manually update the LSP binary to the latest version
     context.subscriptions.push(vscode.commands.registerCommand('forgevsc.updateLSP', async () => {
         const serverBinaryName = getServerBinaryName();
