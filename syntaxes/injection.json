@@ -15,7 +15,7 @@
                     "name": "string.template.begin.js"
                 }
             },
-            "end": "`",
+            "end": "(?<!\\\\)`",
             "endCaptures": {
                 "0": {
                     "name": "string.template.end.js"
