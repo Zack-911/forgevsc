@@ -111,6 +111,27 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
+	// Register command to manually select a custom LSP binary
+	context.subscriptions.push(vscode.commands.registerCommand('forgevsc.useCustomBinary', async () => {
+		const fileUri = await vscode.window.showOpenDialog({
+			canSelectMany: false,
+			openLabel: 'Select LSP Binary',
+			filters: { 'Executables': ['*'] }
+		});
+		if (!fileUri || fileUri.length === 0) {
+			vscode.window.showInformationMessage('ForgeLSP: No binary selected.');
+			return;
+		}
+		const selectedPath = fileUri[0].fsPath;
+		await context.globalState.update('customBinaryPath', selectedPath);
+		vscode.window.showInformationMessage(`ForgeLSP: Custom binary set to ${selectedPath}`);
+		// Restart client if already running
+		if (client && client.isRunning()) {
+			await client.stop();
+			await startClient(context);
+		}
+	}));
+
 	// Register command to manually update the LSP binary to the latest version
 	context.subscriptions.push(vscode.commands.registerCommand('forgevsc.updateLSP', async () => {
 		const serverBinaryName = getServerBinaryName();
@@ -124,7 +145,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			fs.mkdirSync(storagePath, { recursive: true });
 		}
 
-		const serverPath = path.join(storagePath, serverBinaryName);
+		let serverPath: string;
+		const customPath = context.globalState.get<string>('customBinaryPath');
+		if (customPath && fs.existsSync(customPath)) {
+			serverPath = customPath;
+			outputChannel.appendLine(`Using custom LSP binary at ${customPath}`);
+		} else {
+			serverPath = path.join(storagePath, serverBinaryName);
+		}
 
 		try {
 			// Stop the running LSP client to avoid file locks during binary replacement
@@ -134,11 +162,15 @@ export async function activate(context: vscode.ExtensionContext) {
 				outputChannel.appendLine('LSP stopped.');
 			}
 
-			outputChannel.appendLine('Manual LSP update triggered...');
-			await downloadBinary(serverBinaryName, serverPath);
+			if (customPath && fs.existsSync(customPath)) {
+				vscode.window.showInformationMessage('ForgeLSP: Using custom binary; update skipped.');
+			} else {
+				outputChannel.appendLine('Manual LSP update triggered...');
+				await downloadBinary(serverBinaryName, serverPath);
 
-			if (os.platform() !== 'win32') {
-				fs.chmodSync(serverPath, '755');
+				if (os.platform() !== 'win32') {
+					fs.chmodSync(serverPath, '755');
+				}
 			}
 
 			vscode.window.showInformationMessage('ForgeLSP binary updated successfully. Restarting LSP...');
@@ -212,7 +244,15 @@ async function startClient(context: vscode.ExtensionContext) {
 		fs.mkdirSync(storagePath, { recursive: true });  // Create storage directory if it doesn't exist
 	}
 
-	const serverPath = path.join(storagePath, serverBinaryName);
+	// Determine binary path: use custom binary if set, otherwise default storage location
+	let serverPath: string;
+	const customPath = context.globalState.get<string>('customBinaryPath');
+	if (customPath && fs.existsSync(customPath)) {
+		serverPath = customPath;
+		outputChannel.appendLine(`Using custom LSP binary at ${customPath}`);
+	} else {
+		serverPath = path.join(storagePath, serverBinaryName);
+	}
 
 	// Handle first-time installation: prompt user to download the binary
 	if (!fs.existsSync(serverPath)) {

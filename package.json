@@ -8,7 +8,7 @@
         "type": "git",
         "url": "https://github.com/zack-911/forgevsc.git"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -29,11 +29,18 @@
         "commands": [
             {
                 "command": "forgevsc.createConfig",
-                "title": "Create Forge Config"
+                "title": "Create Forge Config",
+                "category": "ForgeScript"
             },
             {
                 "command": "forgevsc.updateLSP",
-                "title": "Update ForgeLSP Binary"
+                "title": "Update ForgeLSP Binary",
+                "category": "ForgeScript"
+            },
+            {
+                "command": "forgevsc.useCustomBinary",
+                "title": "Use Custom LSP Binary",
+                "category": "ForgeScript"
             }
         ],
         "languages": [
