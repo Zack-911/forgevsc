@@ -71,9 +71,9 @@
 
 | Command | Description |
 |---------|-------------|
-| `Create Forge Config` | Creates a `forgeconfig.json` in the workspace root |
-| `Update ForgeLSP Binary` | Manually check for and install LSP updates |
-
+| `ForgeScript: Create Forge Config` | Creates a `forgeconfig.json` in the workspace root |
+| `ForgeScript: Update ForgeLSP Binary` | Manually check for and install LSP updates |
+| `ForgeScript: Use Custom LSP Binary` | Manually select a custom LSP binary |
 ---
 
 ## ⚙️ Configuration
