@@ -55,9 +55,9 @@ async function activate(context) {
         }
         // Create default configuration with entry point and output directory
         const defaultConfig = {
-            "$schema": "vscode://schemas/forgeconfig",
             "urls": [
-                "https://github.com/tryforge/forgescript/tree/dev/metadata/functions.json"
+                "github:tryforge/forgescript#dev",
+                "github:tryforge/forgedb"
             ]
         };
         fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
