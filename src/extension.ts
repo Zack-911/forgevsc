@@ -96,6 +96,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		// Create default configuration with entry point and output directory
 		const defaultConfig = {
+			"multiple_function_colors": true,
 			"urls": [
 				"github:tryforge/forgescript#dev",
 				"github:tryforge/forgedb"
