@@ -3,7 +3,9 @@
   "title": "ForgeConfig Schema",
   "description": "Configuration schema for ForgeScript LSP server",
   "type": "object",
-  "required": ["urls"],
+  "required": [
+    "urls"
+  ],
   "properties": {
     "urls": {
       "type": "array",
@@ -31,12 +33,14 @@
       "description": "Array of custom function definitions",
       "items": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
             "description": "Function name (will be accessible as $functionName)",
-            "pattern": "$^[a-zA-Z_][a-zA-Z0-9_]*$",
+            "pattern": "^\\$[a-zA-Z_][a-zA-Z0-9_]*$",
             "minLength": 1,
             "maxLength": 100
           },
@@ -45,6 +49,22 @@
             "description": "Optional description of what the function does",
             "maxLength": 500
           },
+          "brackets": {
+            "type": "boolean",
+            "description": "Whether the function requires brackets (optional, defaults based on params presence)",
+            "default": true
+          },
+          "alias": {
+            "type": "array",
+            "description": "Optional array of alternative function names (aliases)",
+            "items": {
+              "type": "string",
+              "pattern": "^\\$[a-zA-Z_][a-zA-Z0-9_]*$",
+              "minLength": 2,
+              "maxLength": 100
+            },
+            "uniqueItems": true
+          },
           "params": {
             "oneOf": [
               {
@@ -52,7 +72,10 @@
                 "description": "Array of parameter objects with full metadata",
                 "items": {
                   "type": "object",
-                  "required": ["name", "type"],
+                  "required": [
+                    "name",
+                    "type"
+                  ],
                   "properties": {
                     "name": {
                       "type": "string",
@@ -69,12 +92,24 @@
                     "type": {
                       "type": "string",
                       "description": "Parameter type",
-                      "enum": ["String", "Boolean", "Number", "Object", "Array", "Any"],
+                      "enum": [
+                        "String",
+                        "Boolean",
+                        "Number",
+                        "Object",
+                        "Array",
+                        "Any"
+                      ],
                       "default": "String"
                     },
                     "required": {
                       "type": "boolean",
                       "description": "Whether this parameter is required",
+                      "default": false
+                    },
+                    "rest": {
+                      "type": "boolean",
+                      "description": "Whether this parameter accepts variadic arguments (rest parameter)",
                       "default": false
                     }
                   },
@@ -150,7 +185,11 @@
         {
           "name": "simpleFunction",
           "description": "A function with simple string parameters",
-          "params": ["param1", "param2", "param3"]
+          "params": [
+            "param1",
+            "param2",
+            "param3"
+          ]
         },
         {
           "name": "arrayFunction",
@@ -181,13 +220,18 @@
       ]
     },
     {
-      "urls": ["https://raw.githubusercontent.com/tryforge/forgescript/dev/metadata/functions.json"],
+      "urls": [
+        "https://raw.githubusercontent.com/tryforge/forgescript/dev/metadata/functions.json"
+      ],
       "multiple_function_colors": false,
       "custom_functions": [
         {
           "name": "myCustomFunc",
           "description": "My custom function",
-          "params": ["input", "output"]
+          "params": [
+            "input",
+            "output"
+          ]
         }
       ]
     }
