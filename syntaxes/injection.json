@@ -1,32 +1,89 @@
 {
-    "scopeName": "forge.injection",
-    "injectionSelector": "L:source.js, L:source.ts, L:source.js.jsx, L:source.tsx",
-    "patterns": [
-        {
-            "begin": "(code)\\s*(:)\\s*(`)",
-            "beginCaptures": {
-                "1": {
-                    "name": "keyword.other.forge-code.js"
-                },
-                "2": {
-                    "name": "punctuation.separator.key-value.js"
-                },
-                "3": {
-                    "name": "string.template.begin.js"
-                }
-            },
-            "end": "(?<!\\\\)`",
-            "endCaptures": {
-                "0": {
-                    "name": "string.template.end.js"
-                }
-            },
-            "contentName": "source.forge",
-            "patterns": [
-                {
-                    "include": "source.forge"
-                }
-            ]
+  "scopeName": "forge.injection",
+  "injectionSelector": "L:source.js, L:source.ts, L:source.js.jsx, L:source.tsx",
+  "patterns": [
+    {
+      "begin": "(code)\\s*(:)\\s*(`)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.forge-code.js"
+        },
+        "2": {
+          "name": "punctuation.separator.key-value.js"
+        },
+        "3": {
+          "name": "string.template.begin.js"
         }
-    ]
+      },
+      "end": "(?<!\\\\)`",
+      "endCaptures": {
+        "0": {
+          "name": "string.template.end.js"
+        }
+      },
+      "contentName": "source.forge",
+      "patterns": [
+        {
+          "begin": "(\\$js|\\$djsEval)(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.js-eval.forge"
+            },
+            "2": {
+              "name": "punctuation.definition.bracket.begin.forge"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.bracket.end.forge"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.forge"
+            },
+            {
+              "name": "string.quoted.template.js",
+              "begin": "\\\\`",
+              "end": "\\\\`",
+              "patterns": [
+                {
+                  "include": "source.forge"
+                },
+                {
+                  "begin": "\\${",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.template-expression.begin.js"
+                    }
+                  },
+                  "end": "}",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.template-expression.end.js"
+                    }
+                  },
+                  "patterns": [
+                    {
+                      "include": "source.js"
+                    }
+                  ]
+                },
+                {
+                  "include": "source.js"
+                }
+              ]
+            },
+            {
+              "include": "source.js"
+            }
+          ]
+        },
+        {
+          "include": "source.forge"
+        }
+      ]
+    }
+  ]
 }
