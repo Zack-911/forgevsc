@@ -28,6 +28,10 @@
       "description": "Enable multiple colors for nested functions in semantic highlighting",
       "default": true
     },
+    "custom_functions_path": {
+      "type": "string",
+      "description": "Path to custom functions folder, relative to the forge config file"
+    },
     "custom_functions": {
       "type": "array",
       "description": "Array of custom function definitions",
