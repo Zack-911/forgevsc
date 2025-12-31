@@ -23,6 +23,8 @@ const node_1 = require("vscode-languageclient/node");
 // ============================================================================
 let client;
 let outputChannel;
+const decorationCache = new Map();
+const highlightsCache = new Map();
 // ============================================================================
 // Extension Lifecycle
 // ============================================================================
@@ -168,6 +170,59 @@ async function activate(context) {
     else {
         outputChannel.appendLine('forgeconfig.json not found. Waiting for command or file creation.');
     }
+    // Re-apply highlights when editor becomes active or visible
+    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(editor => {
+        if (editor) {
+            const cached = highlightsCache.get(editor.document.uri.toString());
+            if (cached) {
+                applyHighlights(cached);
+            }
+        }
+    }));
+    context.subscriptions.push(vscode.window.onDidChangeVisibleTextEditors(editors => {
+        for (const editor of editors) {
+            const cached = highlightsCache.get(editor.document.uri.toString());
+            if (cached) {
+                applyHighlights(cached);
+            }
+        }
+    }));
+}
+function getDecoration(color) {
+    let deco = decorationCache.get(color);
+    if (!deco) {
+        deco = vscode.window.createTextEditorDecorationType({
+            color,
+        });
+        decorationCache.set(color, deco);
+    }
+    return deco;
+}
+function applyHighlights(params) {
+    // Update cache
+    highlightsCache.set(params.uri, params);
+    const editor = vscode.window.visibleTextEditors.find(e => e.document.uri.toString() === params.uri);
+    if (!editor) {
+        return;
+    }
+    const grouped = new Map();
+    for (const h of params.highlights) {
+        const range = new vscode.Range(h.range.start.line, h.range.start.character, h.range.end.line, h.range.end.character);
+        if (!grouped.has(h.color)) {
+            grouped.set(h.color, []);
+        }
+        grouped.get(h.color).push(range);
+    }
+    // Clear old decorations before applying new ones
+    clearEditor(editor);
+    for (const [color, ranges] of grouped) {
+        editor.setDecorations(getDecoration(color), ranges);
+    }
+}
+function clearEditor(editor) {
+    for (const deco of decorationCache.values()) {
+        editor.setDecorations(deco, []);
+    }
 }
 // ============================================================================
 // Language Server Management
@@ -283,6 +338,9 @@ async function startClient(context) {
     outputChannel.appendLine('Starting Forge Language Server...');
     await client.start();
     outputChannel.appendLine('Forge Language Server started.');
+    client.onNotification('forge/highlights', (params) => {
+        applyHighlights(params);
+    });
     vscode.workspace.createFileSystemWatcher('**/forgeconfig.json')
         .onDidChange(() => {
         if (client?.isRunning())
