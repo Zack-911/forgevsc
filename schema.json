@@ -23,6 +23,13 @@
         "github:tryforge/forgecanvas#dev"
       ]
     },
+    "function_colors": {
+      "type": "array",
+      "description": "Custom function colors",
+      "items": {
+        "type": "string"
+      }
+    },
     "multiple_function_colors": {
       "type": "boolean",
       "description": "Enable multiple colors for nested functions in semantic highlighting",
@@ -238,14 +245,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "function_colors",
-      "description": "Custom function colors",
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     }
   ]
 }
