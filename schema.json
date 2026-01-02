@@ -30,6 +30,11 @@
         "type": "string"
       }
     },
+    "consistent_function_color": {
+      "type": "boolean",
+      "description": "Enable consistent colors for functions in highlighting",
+      "default": true
+    },
     "multiple_function_colors": {
       "type": "boolean",
       "description": "Enable multiple colors for nested functions in semantic highlighting",

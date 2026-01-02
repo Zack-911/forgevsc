@@ -111,11 +111,37 @@ export async function activate(context: vscode.ExtensionContext) {
 
     // Create default configuration with entry point and output directory
     const defaultConfig = {
-      "multiple_function_colors": true,
       "urls": [
-        "github:tryforge/forgescript#dev",
-        "github:tryforge/forgedb"
-      ]
+        "github:user/repo#branch"
+      ],
+      "multiple_function_colors": true,
+      "consistent_function_colors": true,
+      "function_colors": [
+        "#FF0000",
+        "#00FF00",
+        "#0000FF"
+      ], // remove if you want to use semantic tokens for colors
+      "custom_functions_path": "custom/functions/path/relative/to/config/file",
+      "custom_functions": [
+        {
+          "name": "$customHttp",
+          "description": "Custom HTTP request function",
+          "params": [
+            {
+              "name": "method",
+              "type": "String",
+              "description": "HTTP method",
+              "required": true
+            },
+            {
+              "name": "url",
+              "type": "String",
+              "description": "Target URL",
+              "required": true
+            }
+          ]
+        }
+      ] // giving the path is recommended
     };
 
     fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
