@@ -190,11 +190,12 @@ async function activate(context) {
     }
     const rootPath = workspaceFolders[0].uri.fsPath;
     const configPath = path.join(rootPath, 'forgeconfig.json');
-    if (fs.existsSync(configPath)) {
+    const vscodeConfigPath = path.join(rootPath, '.vscode', 'forgeconfig.json');
+    if (fs.existsSync(configPath) || fs.existsSync(vscodeConfigPath)) {
         await startClient(context);
     }
     else {
-        outputChannel.appendLine('forgeconfig.json not found. Waiting for command or file creation.');
+        outputChannel.appendLine('forgeconfig.json or .vscode/forgeconfig.json not found. Waiting for command or file creation.');
     }
     // Re-apply highlights when editor becomes active or visible
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(editor => {

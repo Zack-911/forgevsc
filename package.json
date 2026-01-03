@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/zack-911/forgevsc.git"
   },
-  "version": "1.0.14",
+  "version": "1.0.15",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -16,13 +16,17 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "workspaceContains:forgeconfig.json"
+    "workspaceContains:forgeconfig.json",
+    "workspaceContains:.vscode/forgeconfig.json"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "jsonValidation": [
       {
-        "fileMatch": "forgeconfig.json",
+        "fileMatch": [
+          "forgeconfig.json",
+          ".vscode/forgeconfig.json"
+        ],
         "url": "./schema.json"
       }
     ],
