@@ -30,7 +30,7 @@
         "type": "string"
       }
     },
-    "consistent_function_color": {
+    "consistent_function_colors": {
       "type": "boolean",
       "description": "Enable consistent colors for functions in highlighting",
       "default": true
