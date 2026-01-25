@@ -73,6 +73,7 @@ let client: LanguageClient;
 let outputChannel: vscode.OutputChannel;
 const decorationCache = new Map<string, vscode.TextEditorDecorationType>();
 const highlightsCache = new Map<string, HighlightParams>();
+let depthStatusBarItem: vscode.StatusBarItem;
 
 // ============================================================================
 // Extension Lifecycle
@@ -92,6 +93,11 @@ const highlightsCache = new Map<string, HighlightParams>();
 export async function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel('ForgeLSP');
   outputChannel.appendLine('ForgeLSP extension activating...');
+
+  depthStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1000);
+  depthStatusBarItem.text = `Depth: 0`;
+  depthStatusBarItem.show();
+  context.subscriptions.push(depthStatusBarItem);
 
   // Register command to create forgeconfig.json in the workspace root
   context.subscriptions.push(vscode.commands.registerCommand('forgevsc.createConfig', async () => {
@@ -282,6 +288,22 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   }));
+
+  context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(event => {
+    if (client && client.isRunning() && (event.textEditor.document.languageId === 'javascript' || event.textEditor.document.languageId === 'typescript')) {
+      const position = event.selections[0].active;
+      client.sendRequest('workspace/executeCommand', {
+        command: 'forge/cursorMoved',
+        arguments: [{
+          uri: event.textEditor.document.uri.toString(),
+          position: {
+            line: position.line,
+            character: position.character
+          }
+        }]
+      });
+    }
+  }));
 }
 
 function getDecoration(color: string) {
@@ -469,6 +491,10 @@ async function startClient(context: vscode.ExtensionContext) {
 
   client.onNotification('forge/highlights', (params: HighlightParams) => {
     applyHighlights(params);
+  });
+
+  client.onNotification('forge/updateDepth', (params: { depth: number }) => {
+    depthStatusBarItem.text = `Depth: ${params.depth}`;
   });
 
   vscode.workspace.createFileSystemWatcher('**/forgeconfig.json')
