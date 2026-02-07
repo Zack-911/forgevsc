@@ -24,7 +24,7 @@
       "contentName": "source.forge",
       "patterns": [
         {
-          "begin": "(\\$js|\\$djsEval)(\\[)",
+          "begin": "(\\$js|\\$djsEval|\\$!djsEval|\\$#djsEval|\\$@\\[.*?\\]djsEval)(\\[)",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.js-eval.forge"
