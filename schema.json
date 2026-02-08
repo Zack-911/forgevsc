@@ -149,6 +149,18 @@
         "additionalProperties": false
       },
       "uniqueItems": true
+    },
+    "log_level": {
+      "type": "string",
+      "description": "Log level for the ForgeLSP server",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "default": "info"
     }
   },
   "additionalProperties": false,

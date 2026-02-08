@@ -85,7 +85,8 @@
   "$schema": "vscode://schemas/forgeconfig",
   "urls": [
     "github:tryforge/forgescript" // Branch can be specified by using # such as github:tryforge/forgescript#dev
-  ]
+  ],
+  "logLevel": "info"
 }
 ```
 
@@ -93,6 +94,7 @@
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
+| `logLevel` | `string` | `"info"` | Log level for the server (`trace`, `debug`, `info`, `warn`, `error`) |
 | `forgevsc.trace.server` | `string` | `"off"` | Traces communication between VS Code and the language server (`off`, `messages`, `verbose`) |
 
 ---
