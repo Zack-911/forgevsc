@@ -24,31 +24,6 @@
       "contentName": "source.forge",
       "patterns": [
         {
-          "name": "comment.block.forge",
-          "begin": "\\$c\\[",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.comment.forge"
-            }
-          },
-          "end": "\\]",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.comment.forge"
-            }
-          },
-          "patterns": [
-            {
-              "name": "constant.character.escape.forge",
-              "match": "\\\\."
-            },
-            {
-              "name": "comment.block.forge",
-              "match": "[^\\\\\\]]+"
-            }
-          ]
-        },
-        {
           "begin": "(\\$(?:!|#|@\\[.*?\\])?(?:js|djsEval))(\\[)",
           "beginCaptures": {
             "1": {
